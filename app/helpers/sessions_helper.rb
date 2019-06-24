@@ -1,11 +1,9 @@
 module SessionsHelper
 
-  # 引数に渡されたユーザーオブジェクトでログインします。
   def log_in(user)
     session[:user_id] = user.id
   end
 
-  # 永続的セッションを記憶します（Userモデルを参照）
   def remember(user)
     user.remember
     cookies.permanent.signed[:user_id] = user.id
@@ -18,15 +16,14 @@ module SessionsHelper
     cookies.delete(:remember_token)
   end
 
-  # セッションと@current_userを破棄します
+
   def log_out
     forget(current_user)
     session.delete(:user_id)
     @current_user = nil
   end
 
-  # 一時的セッションにいるユーザーを返します。
-  # それ以外の場合はcookiesに対応するユーザーを返します。
+
   def current_user
     if (user_id = session[:user_id])
       @current_user ||= User.find_by(id: user_id)
